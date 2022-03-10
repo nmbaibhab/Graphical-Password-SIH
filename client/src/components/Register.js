@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import A from "../images/1.jpg";
@@ -27,6 +27,9 @@ import W from "../images/23.jpg";
 import X from "../images/24.jpg";
 import Y from "../images/25.jpg";
 import Z from "../images/26.jpg";
+
+var flag = 0;
+let shuffledArray;
 const RegisterForm = () => {
   function shuffle(array) {
     let currentIndex = array.length,
@@ -75,22 +78,58 @@ const RegisterForm = () => {
     Y,
     Z,
   ];
+  if (flag === 0) {
+    shuffledArray = shuffle(array);
+    flag = 1;
+  }
 
-  const shuffledArray = shuffle(array);
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+    console.log(event.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+    };
+    console.log(data);
+  };
+
   return (
     <div className="mx-auto mt-5 w-50">
       <div className="text-center mt-5 mb-5 font-weight-bold fs-5">
         <strong>Register Page</strong>
       </div>
-      <Form>
+      <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter username" />
+          <Form.Control
+            aria-label="username"
+            value={values.username}
+            onChange={handleChange("username")}
+            type="text"
+            placeholder="Enter username"
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            aria-label="email"
+            value={values.email}
+            onChange={handleChange("email")}
+          />
           {/* <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text> */}
@@ -108,10 +147,11 @@ const RegisterForm = () => {
         <div className="my-3 ">
           {shuffledArray.map((image) => (
             <Button
+              key={image}
               // onclick={setPassword(id["image"])}
               variant="outline-primary p-1 mx-2 my-2 "
             >
-              <img src={image} className="p-0 m-0" />
+              <img alt="alphabet" src={image} className="p-0 m-0" />
             </Button>
           ))}
         </div>

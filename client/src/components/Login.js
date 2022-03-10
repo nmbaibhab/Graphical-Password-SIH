@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import A from "../images/1.jpg";
@@ -29,13 +29,15 @@ import Y from "../images/25.jpg";
 import Z from "../images/26.jpg";
 // import { Link, useHistory } from "react-router-dom";
 
+var flag = 0;
+let shuffledArray;
 const LogInForm = () => {
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
 
     // While there remain elements to shuffle...
-    while (currentIndex != 0) {
+    while (currentIndex !== 0) {
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -78,17 +80,47 @@ const LogInForm = () => {
     Z,
   ];
 
-  const shuffledArray = shuffle(array);
+  if (flag === 0) {
+    shuffledArray = shuffle(array);
+    flag = 1;
+  }
+  // console.log("Running");
+
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+    console.log(event.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = {
+      email: values.email,
+      password: values.password,
+    };
+    console.log(data);
+  };
 
   return (
     <div className="mx-auto mt-5 w-50">
       <div className="text-center mt-5 mb-5 font-weight-bold fs-5">
         <strong>Login Page</strong>
       </div>
-      <Form>
+      <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            aria-label="email"
+            value={values.email}
+            onChange={handleChange("email")}
+          />
+
           {/* <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text> */}
@@ -105,8 +137,8 @@ const LogInForm = () => {
         </Form.Group> */}
         <div className="my-3 ">
           {shuffledArray.map((image) => (
-            <Button variant="outline-primary p-1 mx-2 my-2 ">
-              <img src={image} className="p-0 m-0" />
+            <Button key={image} variant="outline-primary p-1 mx-2 my-2 ">
+              <img alt="alphabet" src={image} className="p-0 m-0" />
             </Button>
           ))}
         </div>
