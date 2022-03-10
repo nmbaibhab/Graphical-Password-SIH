@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+// import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
@@ -27,6 +27,15 @@ import W from "../images/23.jpg";
 import X from "../images/24.jpg";
 import Y from "../images/25.jpg";
 import Z from "../images/26.jpg";
+import N1 from "../images/27.jpg";
+import N2 from "../images/28.jpg";
+import N3 from "../images/29.jpg";
+import N4 from "../images/30.jpg";
+import N5 from "../images/31.jpg";
+import N6 from "../images/32.jpg";
+import N7 from "../images/33.jpg";
+import N8 from "../images/34.jpg";
+import N9 from "../images/35.jpg";
 
 var flag = 0;
 let shuffledArray;
@@ -36,7 +45,7 @@ const RegisterForm = () => {
       randomIndex;
 
     // While there remain elements to shuffle...
-    while (currentIndex != 0) {
+    while (currentIndex !== 0) {
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -77,6 +86,15 @@ const RegisterForm = () => {
     X,
     Y,
     Z,
+    N1,
+    N2,
+    N3,
+    N4,
+    N5,
+    N6,
+    N7,
+    N8,
+    N9,
   ];
   if (flag === 0) {
     shuffledArray = shuffle(array);
@@ -104,68 +122,81 @@ const RegisterForm = () => {
     console.log(data);
   };
 
+  const [category, setCategory] = useState({});
+
+  function categoryClick(cat) {
+    if (category === cat) setCategory();
+    else {
+      setCategory(cat);
+      console.log(cat);
+    }
+  }
   return (
-    <div className="mx-auto mt-5 w-50">
-      <div className="text-center mt-5 mb-5 font-weight-bold fs-5">
-        <strong>Register Page</strong>
+    <div className="mx-auto mt-5 w-3/5">
+      <p className="my-4 text-center text-4xl font-bold">Register Page</p>
+      <div className="block text-center ">
+        <p className="inline">Already registered.</p>
+        <Link to="/login" className="text-blue-600">
+          {" "}
+          Login Now!!
+        </Link>
       </div>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
+      <form onSubmit={submitHandler}>
+        <div className="my-6 ">
+          <lable className="text-lg  font-semibold text-blue-500">
+            Username
+          </lable>
+          <input
+            className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
             aria-label="username"
             value={values.username}
             onChange={handleChange("username")}
             type="text"
             placeholder="Enter username"
           />
-        </Form.Group>
+        </div>
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
+        <div className="my-6 ">
+          <lable className="text-lg  font-semibold text-blue-500">Email</lable>
+          <input
+            className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
             type="email"
             placeholder="Enter email"
             aria-label="email"
             value={values.email}
             onChange={handleChange("email")}
           />
-          {/* <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text> */}
-        </Form.Group>
+        </div>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>
-            Create Graphic Password by selecting your images
-          </Form.Label>
-          {/* <Form.Control type="password" placeholder="Password" /> */}
-        </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
-        <div className="my-3 ">
+        <div className="my-6 ">
+          <lable className="text-lg  font-semibold text-blue-500">
+            Create your Graphical password by selecting the images
+          </lable>
+        </div>
+
+        <div className="my-2 w-full mx-auto">
           {shuffledArray.map((image) => (
-            <Button
+            <button
               key={image}
               // onclick={setPassword(id["image"])}
-              variant="outline-primary p-1 mx-2 my-2 "
+              className={` mx-2 my-2 border-green-700 ${
+                category === `${image}`
+                  ? "bg-blue-200 transform scale-50"
+                  : "bg-blue-50 border-2"
+              }`}
+              onClick={() => categoryClick(`${image}`)}
             >
               <img alt="alphabet" src={image} className="p-0 m-0" />
-            </Button>
+            </button>
           ))}
         </div>
-        <Button
-          variant="primary"
+        <button
           type="submit"
-          className=" mx-auto text-center"
+          className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-md font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-1/4 my-8 block mx-auto"
         >
           Submit
-        </Button>
-      </Form>
-      <div className=" mx-auto w-30 my-4">
-        <Link to="/login">Login Now!!</Link>
-      </div>
+        </button>
+      </form>
     </div>
   );
 };

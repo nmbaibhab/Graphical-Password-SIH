@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
@@ -27,6 +26,15 @@ import W from "../images/23.jpg";
 import X from "../images/24.jpg";
 import Y from "../images/25.jpg";
 import Z from "../images/26.jpg";
+import N1 from "../images/27.jpg";
+import N2 from "../images/28.jpg";
+import N3 from "../images/29.jpg";
+import N4 from "../images/30.jpg";
+import N5 from "../images/31.jpg";
+import N6 from "../images/32.jpg";
+import N7 from "../images/33.jpg";
+import N8 from "../images/34.jpg";
+import N9 from "../images/35.jpg";
 // import { Link, useHistory } from "react-router-dom";
 
 var flag = 0;
@@ -78,6 +86,15 @@ const LogInForm = () => {
     X,
     Y,
     Z,
+    N1,
+    N2,
+    N3,
+    N4,
+    N5,
+    N6,
+    N7,
+    N8,
+    N9,
   ];
 
   if (flag === 0) {
@@ -106,49 +123,52 @@ const LogInForm = () => {
   };
 
   return (
-    <div className="mx-auto mt-5 w-50">
-      <div className="text-center mt-5 mb-5 font-weight-bold fs-5">
-        <strong>Login Page</strong>
+    <div className="mx-auto mt-5 w-3/5">
+      <p className="my-4 text-center text-4xl font-bold">Login Page</p>
+      <div className="block text-center ">
+        <p className="inline">New User ??</p>
+        <Link to="/register" className="text-blue-600">
+          {" "}
+          Register Here
+        </Link>
       </div>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
+      <form onSubmit={submitHandler}>
+        <div className="my-6 ">
+          <lable className="text-lg  font-semibold text-blue-500">Email</lable>
+          <input
+            className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
             type="email"
             placeholder="Enter email"
             aria-label="email"
             value={values.email}
             onChange={handleChange("email")}
           />
+        </div>
 
-          {/* <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text> */}
-        </Form.Group>
+        <div className="my-6 ">
+          <lable className="text-lg  font-semibold text-blue-500">
+            Create your Graphical password by selecting the images
+          </lable>
+        </div>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>
-            Enter your Graphic Password by selecting the images
-          </Form.Label>
-          {/* <Form.Control type="password" placeholder="Password" /> */}
-        </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group> */}
-        <div className="my-3 ">
+        <div className="my-2 w-full mx-auto">
           {shuffledArray.map((image) => (
-            <Button key={image} variant="outline-primary p-1 mx-2 my-2 ">
+            <button
+              key={image}
+              // onclick={setPassword(id["image"])}
+              className=" mx-2 my-2 border-green-700"
+            >
               <img alt="alphabet" src={image} className="p-0 m-0" />
-            </Button>
+            </button>
           ))}
         </div>
-        <Button variant="primary" type="submit">
+        <button
+          type="submit"
+          className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-md font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-1/4 my-8 block mx-auto"
+        >
           Submit
-        </Button>
-      </Form>
-      <div className="my-4 mx-auto w-30">
-        <Link to="/register">Register Now!!</Link>
-      </div>
+        </button>
+      </form>
     </div>
   );
 };
