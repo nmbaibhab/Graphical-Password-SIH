@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-// import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
