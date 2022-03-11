@@ -1,5 +1,6 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
 import C from "../images/3.jpg";
@@ -38,12 +39,27 @@ import N9 from "../images/35.jpg";
 
 var flag = 0;
 let shuffledArray;
-
+let grammar;
 setInterval(() => {
   window.location.reload();
 }, 900000);
 
 const RegisterForm = () => {
+  const url = "http://localhost:5000/register";
+  const grammarUrl = "http://localhost:5000/grammar";
+  useEffect(() => {
+    // ⬇ This calls my get request from the server
+    axios
+      .get(grammarUrl)
+      .then((res) => {
+        grammar = res.data;
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
@@ -122,12 +138,21 @@ const RegisterForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const data = {
+    const userData = {
       username: values.username,
       email: values.email,
-      password: values.password,
+      password: category.join(grammar["timestamp"]),
     };
-    console.log(data);
+    console.log(userData);
+    axios
+      .post(url, userData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log(userData);
   };
 
   const [category, setCategory] = useState([]);
@@ -184,25 +209,28 @@ const RegisterForm = () => {
         </div>
 
         <div className="my-2 w-full mx-auto">
-          {shuffledArray.map((image) => (
-            <button
-              type="button"
-              key={image.key}
-              // onclick={setPassword(id["image"])}
-              className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
-              onClick={() => categoryClick(`${image.key}`)}
-            >
-              <img
-                alt="alphabet"
-                src={image.value}
-                className={`p-0 m-0 rounded-md ${
-                  category.includes(image.key)
-                    ? " opacity-0 "
-                    : "border-blue-500"
-                }`}
-              />
-            </button>
-          ))}
+          {shuffledArray &&
+            shuffledArray.map((image) => (
+              <button
+                type="button"
+                key={image.key}
+                // onclick={setPassword(id["image"])}
+                className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
+                onClick={() =>
+                  categoryClick(`${grammar && grammar["data"][image.key]}`)
+                }
+              >
+                <img
+                  alt="alphabet"
+                  src={image.value}
+                  className={`p-0 m-0 rounded-md ${
+                    grammar && category.includes(grammar["data"][image.key])
+                      ? " opacity-0 "
+                      : "border-blue-500"
+                  }`}
+                />
+              </button>
+            ))}
         </div>
         <button
           type="submit"
