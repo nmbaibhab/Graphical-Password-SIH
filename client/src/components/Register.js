@@ -38,6 +38,11 @@ import N9 from "../images/35.jpg";
 
 var flag = 0;
 let shuffledArray;
+
+setInterval(() => {
+  window.location.reload();
+}, 900000);
+
 const RegisterForm = () => {
   function shuffle(array) {
     let currentIndex = array.length,

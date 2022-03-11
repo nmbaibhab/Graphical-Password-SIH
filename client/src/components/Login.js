@@ -35,10 +35,14 @@ import N6 from "../images/32.jpg";
 import N7 from "../images/33.jpg";
 import N8 from "../images/34.jpg";
 import N9 from "../images/35.jpg";
-// import { Link, useHistory } from "react-router-dom";
 
 var flag = 0;
 let shuffledArray;
+
+setInterval(() => {
+  window.location.reload();
+}, 900000);
+
 const LogInForm = () => {
   function shuffle(array) {
     let currentIndex = array.length,
