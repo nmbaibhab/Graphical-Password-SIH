@@ -24,19 +24,33 @@ const UserSchema = new mongoose.Schema(
 );
 
 const AlphabetSchema = new mongoose.Schema({
-  letter: {
+  alphabet: {
     type: String,
-    required: [true, "Please provide an email"],
+    required: true,
     unique: true,
   },
-  id: {
+  previous: {
     type: String,
-    required: [true, "Please provide an password"],
     unique: true,
   },
-});
+  current: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  previoustimestamp: {
+    type: String,
+    unique: true,
+  },
+  currenttimestamp: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+},
+{ collection: 'grammar' });
 
-const User = mongoose.model("User", UserSchema);
-const Alphabet = mongoose.model("Alphabet", AlphabetSchema);
+const User = mongoose.model("user", UserSchema);
+const Alphabet = mongoose.model("grammar", AlphabetSchema);
 
 module.exports = { User, Alphabet };
