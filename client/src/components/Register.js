@@ -49,6 +49,8 @@ const RegisterForm = () => {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
+      // console.log(array[currentIndex].key);
+      // console.log(array[randomIndex].key);
       // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex],
@@ -58,43 +60,45 @@ const RegisterForm = () => {
 
     return array;
   }
+
   const array = [
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
-    N1,
-    N2,
-    N3,
-    N4,
-    N5,
-    N6,
-    N7,
-    N8,
-    N9,
+    { key: "A", value: A },
+    { key: "B", value: B },
+    { key: "C", value: C },
+    { key: "D", value: D },
+    { key: "E", value: E },
+    { key: "F", value: F },
+    { key: "G", value: G },
+    { key: "H", value: H },
+    { key: "I", value: I },
+    { key: "J", value: J },
+    { key: "K", value: K },
+    { key: "L", value: L },
+    { key: "M", value: M },
+    { key: "N", value: N },
+    { key: "O", value: O },
+    { key: "P", value: P },
+    { key: "Q", value: Q },
+    { key: "R", value: R },
+    { key: "S", value: S },
+    { key: "T", value: T },
+    { key: "U", value: U },
+    { key: "V", value: V },
+    { key: "W", value: W },
+    { key: "X", value: X },
+    { key: "Y", value: Y },
+    { key: "Z", value: Z },
+    { key: "1", value: N1 },
+    { key: "2", value: N2 },
+    { key: "3", value: N3 },
+    { key: "4", value: N4 },
+    { key: "5", value: N5 },
+    { key: "6", value: N6 },
+    { key: "7", value: N7 },
+    { key: "8", value: N8 },
+    { key: "9", value: N9 },
   ];
+
   if (flag === 0) {
     shuffledArray = shuffle(array);
     flag = 1;
@@ -121,15 +125,17 @@ const RegisterForm = () => {
     console.log(data);
   };
 
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState([]);
 
-  function categoryClick(cat) {
-    if (category === cat) setCategory();
-    else {
-      setCategory(cat);
-      console.log(cat);
+  function categoryClick(button) {
+    if (category.includes(button)) {
+      setCategory(category.filter((el) => el !== button));
+    } else {
+      let temp = [...category, button];
+      setCategory(temp);
     }
   }
+  console.log(category);
   return (
     <div className="mx-auto mt-5 w-3/5">
       <p className="my-4 text-center text-4xl font-bold">Register Page</p>
@@ -142,9 +148,7 @@ const RegisterForm = () => {
       </div>
       <form onSubmit={submitHandler}>
         <div className="my-6 ">
-          <lable className="text-lg  font-semibold text-blue-500">
-            Username
-          </lable>
+          <p className="text-lg  font-semibold text-blue-500">Username</p>
           <input
             className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
             aria-label="username"
@@ -156,7 +160,7 @@ const RegisterForm = () => {
         </div>
 
         <div className="my-6 ">
-          <lable className="text-lg  font-semibold text-blue-500">Email</lable>
+          <p className="text-lg  font-semibold text-blue-500">Email</p>
           <input
             className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
             type="email"
@@ -168,24 +172,30 @@ const RegisterForm = () => {
         </div>
 
         <div className="my-6 ">
-          <lable className="text-lg  font-semibold text-blue-500">
+          <p className="text-lg  font-semibold text-blue-500">
             Create your Graphical password by selecting the images
-          </lable>
+          </p>
+          <p>*Your selected images will hide for security reasons</p>
         </div>
 
         <div className="my-2 w-full mx-auto">
           {shuffledArray.map((image) => (
             <button
-              key={image}
+              type="button"
+              key={image.key}
               // onclick={setPassword(id["image"])}
-              className={` mx-2 my-2 border-green-700 ${
-                category === `${image}`
-                  ? "bg-blue-200 transform scale-50"
-                  : "bg-blue-50 border-2"
-              }`}
-              onClick={() => categoryClick(`${image}`)}
+              className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
+              onClick={() => categoryClick(`${image.key}`)}
             >
-              <img alt="alphabet" src={image} className="p-0 m-0" />
+              <img
+                alt="alphabet"
+                src={image.value}
+                className={`p-0 m-0 rounded-md ${
+                  category.includes(image.key)
+                    ? " opacity-0 "
+                    : "border-blue-500"
+                }`}
+              />
             </button>
           ))}
         </div>
