@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
@@ -45,6 +45,8 @@ setInterval(() => {
 }, 900000);
 
 const LogInForm = () => {
+  const history = useHistory();
+  const userInfo = JSON.parse(localStorage.getItem("userData"));
   const url = "http://localhost:5000/login";
   const grammarUrl = "http://localhost:5000/grammar";
   useEffect(() => {
@@ -135,20 +137,26 @@ const LogInForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const userData = {
-      email: values.email,
-      password: category.join(grammar["timestamp"]),
-    };
-    console.log(userData);
-    axios
-      .post(url, userData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log(userData);
+    if (category.length < 4) {
+      alert("Please select aleast 4 patterns");
+    } else {
+      const userData = {
+        email: values.email,
+        password: category.join(grammar["timestamp"]),
+      };
+      console.log(userData);
+      axios
+        .post(url, userData)
+        .then((res) => {
+          console.log(res.data);
+          localStorage.setItem("userInfo", JSON.stringify(res.data));
+          history.push("/profile");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    // console.log(userData);
   };
 
   const [category, setCategory] = useState([]);
@@ -164,68 +172,72 @@ const LogInForm = () => {
   }
   console.log(category);
 
-  return (
-    <div className="mx-auto mt-5 w-3/5">
-      <p className="my-4 text-center text-4xl font-bold">Login Page</p>
-      <div className="block text-center ">
-        <p className="inline">New User ??</p>
-        <Link to="/register" className="text-blue-600">
-          {" "}
-          Register Here
-        </Link>
+  if (!userInfo) {
+    return (
+      <div className="mx-auto mt-5 w-3/5">
+        <p className="my-4 text-center text-4xl font-bold">Login Page</p>
+        <div className="block text-center ">
+          <p className="inline">New User ??</p>
+          <Link to="/register" className="text-blue-600">
+            {" "}
+            Register Here
+          </Link>
+        </div>
+        <form onSubmit={submitHandler}>
+          <div className="my-6 ">
+            <p className="text-lg  font-semibold text-blue-500">Email</p>
+            <input
+              className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
+              type="email"
+              placeholder="Enter email"
+              aria-label="email"
+              value={values.email}
+              onChange={handleChange("email")}
+            />
+          </div>
+
+          <div className="my-6 ">
+            <p className="text-lg  font-semibold text-blue-500">
+              Create your Graphical password by selecting the images
+            </p>
+            <p>*Your selected images will hide for security reasons</p>
+          </div>
+
+          <div className="my-2 w-full mx-auto">
+            {shuffledArray.map((image) => (
+              <button
+                type="button"
+                key={image.key}
+                // onclick={setPassword(id["image"])}
+                className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
+                onClick={() =>
+                  categoryClick(`${grammar && grammar["data"][image.key]}`)
+                }
+              >
+                <img
+                  alt="alphabet"
+                  src={image.value}
+                  className={`p-0 m-0 rounded-md ${
+                    grammar && category.includes(grammar["data"][image.key])
+                      ? " opacity-0 "
+                      : "border-blue-500"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+          <button
+            type="submit"
+            className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-md font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-400 py-4 w-1/4 my-8 block mx-auto"
+          >
+            Submit
+          </button>
+        </form>
       </div>
-      <form onSubmit={submitHandler}>
-        <div className="my-6 ">
-          <p className="text-lg  font-semibold text-blue-500">Email</p>
-          <input
-            className="bg-gray-200 border rounded focus:outline-none text-md font-medium leading-none text-gray-800 py-3 w-full pl-3 mt-2 block "
-            type="email"
-            placeholder="Enter email"
-            aria-label="email"
-            value={values.email}
-            onChange={handleChange("email")}
-          />
-        </div>
-
-        <div className="my-6 ">
-          <p className="text-lg  font-semibold text-blue-500">
-            Create your Graphical password by selecting the images
-          </p>
-          <p>*Your selected images will hide for security reasons</p>
-        </div>
-
-        <div className="my-2 w-full mx-auto">
-          {shuffledArray.map((image) => (
-            <button
-              type="button"
-              key={image.key}
-              // onclick={setPassword(id["image"])}
-              className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
-              onClick={() =>
-                categoryClick(`${grammar && grammar["data"][image.key]}`)
-              }
-            >
-              <img
-                alt="alphabet"
-                src={image.value}
-                className={`p-0 m-0 rounded-md ${
-                  grammar && category.includes(grammar["data"][image.key])
-                    ? " opacity-0 "
-                    : "border-blue-500"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-        <button
-          type="submit"
-          className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-md font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-1/4 my-8 block mx-auto"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
-  );
+    );
+  } else {
+    return <Redirect to="/profile" />;
+  }
 };
 
 export default LogInForm;
