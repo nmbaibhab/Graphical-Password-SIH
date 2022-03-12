@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 //Register Route
 async function grammarDecoder(password) {
@@ -33,8 +34,11 @@ async function grammarDecoder(password) {
 exports.register = async (req, res) => {
   let { username, email, password } = req.body;
   password = await grammarDecoder(password);
-  if (!password) return res.status(500).json("Password varification failed !!");
-  console.log(req.body);
+  if (!password) return res.status(500).json("Password verification failed !!");
+
+  // Get the hashed password
+  password = await bcrypt.hash(password, 12);
+
   try {
     User.User.create(
       {
@@ -43,7 +47,6 @@ exports.register = async (req, res) => {
         password,
       },
       function (err, user) {
-        console.log(err);
         if (err) return res.status(404).json(err);
         else return res.status(200).json(user);
       }
@@ -61,10 +64,12 @@ exports.login = async (req, res) => {
     if (!password)
       return res.status(500).json("Password varification failed !!");
 
-    const user = await User.User.findOne({ email: req.body.email });
+    const user = await User.User.findOne({ email: email });
     if (!user) return res.status(404).json("user not found");
 
-    if (password == user.password) {
+    let isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
       return res.status(200).json(user);
     }
   } catch (err) {
