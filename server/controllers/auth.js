@@ -47,7 +47,6 @@ exports.register = async (req, res) => {
         password,
       },
       function (err, user) {
-        console.log(err);
         if (err) return res.status(404).json(err);
         else return res.status(200).json(user);
       }
