@@ -1,5 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import A from "../images/1.jpg";
 import B from "../images/2.jpg";
 import C from "../images/3.jpg";
@@ -35,11 +36,30 @@ import N6 from "../images/32.jpg";
 import N7 from "../images/33.jpg";
 import N8 from "../images/34.jpg";
 import N9 from "../images/35.jpg";
-// import { Link, useHistory } from "react-router-dom";
 
 var flag = 0;
 let shuffledArray;
+let grammar;
+setInterval(() => {
+  window.location.reload();
+}, 900000);
+
 const LogInForm = () => {
+  const url = "http://localhost:5000/login";
+  const grammarUrl = "http://localhost:5000/grammar";
+  useEffect(() => {
+    // ⬇ This calls my get request from the server
+    axios
+      .get(grammarUrl)
+      .then((res) => {
+        grammar = res.data;
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
@@ -115,11 +135,20 @@ const LogInForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const data = {
+    const userData = {
       email: values.email,
-      password: values.password,
+      password: category.join(grammar["timestamp"]),
     };
-    console.log(data);
+    console.log(userData);
+    axios
+      .post(url, userData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log(userData);
   };
 
   const [category, setCategory] = useState([]);
@@ -130,6 +159,7 @@ const LogInForm = () => {
     } else {
       let temp = [...category, button];
       setCategory(temp);
+      console.log(category);
     }
   }
   console.log(category);
@@ -171,13 +201,15 @@ const LogInForm = () => {
               key={image.key}
               // onclick={setPassword(id["image"])}
               className=" mx-2 my-2  bg-blue-400 border-blue-700 border-2 rounded-md"
-              onClick={() => categoryClick(`${image.key}`)}
+              onClick={() =>
+                categoryClick(`${grammar && grammar["data"][image.key]}`)
+              }
             >
               <img
                 alt="alphabet"
                 src={image.value}
                 className={`p-0 m-0 rounded-md ${
-                  category.includes(image.key)
+                  grammar && category.includes(grammar["data"][image.key])
                     ? " opacity-0 "
                     : "border-blue-500"
                 }`}
