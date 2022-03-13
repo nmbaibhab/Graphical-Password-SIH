@@ -55,7 +55,7 @@ const LogInForm = () => {
       .get(grammarUrl)
       .then((res) => {
         grammar = res.data;
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -132,7 +132,7 @@ const LogInForm = () => {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   const submitHandler = (e) => {
@@ -144,15 +144,16 @@ const LogInForm = () => {
         email: values.email,
         password: category.join(grammar["timestamp"]),
       };
-      console.log(userData);
+      // console.log(userData);
       axios
         .post(url, userData)
         .then((res) => {
-          console.log(res.data);
+          // console.log("Login Success");
           localStorage.setItem("userInfo", JSON.stringify(res.data));
           history.push("/profile");
         })
         .catch((error) => {
+          alert("Login Failed. Please Try again");
           console.log(error);
         });
     }
@@ -167,10 +168,10 @@ const LogInForm = () => {
     } else {
       let temp = [...category, button];
       setCategory(temp);
-      console.log(category);
+      // console.log(category);
     }
   }
-  console.log(category);
+  // console.log(category);
 
   if (!userInfo) {
     return (

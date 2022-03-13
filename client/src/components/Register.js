@@ -55,7 +55,7 @@ const RegisterForm = () => {
       .get(grammarUrl)
       .then((res) => {
         grammar = res.data;
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -135,7 +135,7 @@ const RegisterForm = () => {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   const submitHandler = (e) => {
@@ -148,19 +148,19 @@ const RegisterForm = () => {
         email: values.email,
         password: category.join(grammar["timestamp"]),
       };
-      console.log(userData);
+      // console.log(userData);
       axios
         .post(url, userData)
         .then((res) => {
-          console.log(res);
           alert("Registered Successfully. Please login!");
           history.push("/login");
         })
         .catch((error) => {
+          alert("Unable to register. Please try again");
           console.log(error);
         });
-      console.log(userData);
     }
+    // console.log(userData);
   };
 
   const [category, setCategory] = useState([]);
@@ -173,7 +173,7 @@ const RegisterForm = () => {
       setCategory(temp);
     }
   }
-  console.log(category);
+  // console.log(category);
   if (!userInfo) {
     return (
       <div className="mx-auto mt-5 w-3/5">

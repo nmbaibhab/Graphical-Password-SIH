@@ -48,7 +48,7 @@ const Profile = () => {
       </section>
     );
   else {
-    alert("User not loggedin");
+    alert("User not Loggedin");
     return <Redirect to="/login" />;
   }
 };
